@@ -1,4 +1,4 @@
-import { type ReactNode } from "react"
+import { type ReactNode, useState } from "react"
 import { toast } from "sonner"
 import {
   BellIcon,
@@ -58,6 +58,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { DatePicker } from "@/components/date-picker"
 import { cn } from "@/lib/utils"
 
 interface SectionProps {
@@ -101,6 +102,43 @@ function Preview({ label, children, className }: PreviewProps) {
         {children}
       </div>
     </div>
+  )
+}
+
+function DatePickerSection() {
+  const [date, setDate] = useState<Date | undefined>()
+  const [dateWithValue, setDateWithValue] = useState<Date | undefined>(new Date(2025, 5, 21))
+
+  return (
+    <Section
+      title="Date Picker"
+      description="Seletor de data com input mascarado e calendário popover."
+    >
+      <Preview label="Padrão" className="flex-col items-start gap-4">
+        <div className="grid w-full max-w-sm gap-1.5">
+          <Label>Selecione uma data</Label>
+          <DatePicker value={date} onChange={setDate} />
+        </div>
+      </Preview>
+      <Preview label="Com valor inicial" className="flex-col items-start gap-4">
+        <div className="grid w-full max-w-sm gap-1.5">
+          <Label>Data de início</Label>
+          <DatePicker value={dateWithValue} onChange={setDateWithValue} />
+        </div>
+      </Preview>
+      <Preview label="Desabilitado">
+        <div className="w-full max-w-sm">
+          <DatePicker value={new Date(2025, 0, 1)} disabled />
+        </div>
+      </Preview>
+      <Preview label="Inválido" className="flex-col items-start gap-4">
+        <div className="grid w-full max-w-sm gap-1.5">
+          <Label htmlFor="date-invalid">Data de nascimento</Label>
+          <DatePicker invalid placeholder="dd/mm/aaaa" />
+          <p className="text-[0.8rem] text-destructive">Data inválida.</p>
+        </div>
+      </Preview>
+    </Section>
   )
 }
 
@@ -511,6 +549,8 @@ export function ComponentsPage() {
               ))}
             </Preview>
           </Section>
+
+          <DatePickerSection />
 
           <Section
             title="Toast (Sonner)"
