@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { to: "/design-system/colors", label: "Cores" },
   { to: "/design-system/components", label: "Componentes" },
   { to: "/design-system/data-table", label: "Data Table" },
+  { to: "/design-system/forms", label: "Formulários" },
 ]
 
 function ThemeToggle() {

@@ -10,6 +10,15 @@ import {
 } from "lucide-react"
 
 import {
+  Stepper,
+  StepperHeader,
+  StepperNavigation,
+  StepperPanel,
+  useStepperContext,
+} from "@/components/stepper"
+import type { StepDefinition } from "@/components/stepper"
+
+import {
   Avatar,
   AvatarBadge,
   AvatarFallback,
@@ -138,6 +147,133 @@ function DatePickerSection() {
           <p className="text-[0.8rem] text-destructive">Data inválida.</p>
         </div>
       </Preview>
+    </Section>
+  )
+}
+
+const STEPPER_STEPS: StepDefinition[] = [
+  { id: "pessoal", label: "Dados Pessoais", description: "Informações básicas" },
+  { id: "endereco", label: "Endereço", description: "Localização e CEP" },
+  { id: "pagamento", label: "Pagamento", description: "Forma de pagamento" },
+  { id: "revisao", label: "Revisão", description: "Confirme os dados" },
+]
+
+function StepperPanelPessoal() {
+  return (
+    <div className="space-y-3">
+      <div className="grid w-full gap-1.5">
+        <Label>Nome completo</Label>
+        <Input placeholder="Seu nome completo" />
+      </div>
+      <div className="grid w-full gap-1.5">
+        <Label>E-mail</Label>
+        <Input type="email" placeholder="voce@exemplo.com" />
+      </div>
+    </div>
+  )
+}
+
+function StepperPanelEndereco() {
+  const { currentStep, markStepError, clearStepError } = useStepperContext()
+  return (
+    <div className="space-y-3">
+      <div className="grid w-full gap-1.5">
+        <Label>CEP</Label>
+        <Input placeholder="00000-000" />
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="grid gap-1.5">
+          <Label>Cidade</Label>
+          <Input placeholder="São Paulo" />
+        </div>
+        <div className="grid gap-1.5">
+          <Label>Estado</Label>
+          <Input placeholder="SP" />
+        </div>
+      </div>
+      <div className="flex gap-2 pt-1">
+        <Button
+          type="button"
+          variant="destructive"
+          size="sm"
+          onClick={() => markStepError(currentStep)}
+        >
+          Simular erro
+        </Button>
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => clearStepError(currentStep)}
+        >
+          Limpar erro
+        </Button>
+      </div>
+    </div>
+  )
+}
+
+function StepperPanelPagamento() {
+  return (
+    <div className="space-y-3">
+      <div className="grid w-full gap-1.5">
+        <Label>Número do cartão</Label>
+        <Input placeholder="0000 0000 0000 0000" />
+      </div>
+      <div className="grid grid-cols-2 gap-3">
+        <div className="grid gap-1.5">
+          <Label>Validade</Label>
+          <Input placeholder="MM/AA" />
+        </div>
+        <div className="grid gap-1.5">
+          <Label>CVV</Label>
+          <Input placeholder="000" />
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function StepperPanelRevisao() {
+  return (
+    <div className="space-y-2">
+      <p className="text-sm font-medium text-foreground">Tudo pronto!</p>
+      <p className="text-sm text-muted-foreground">
+        Revise os dados acima e clique em Concluir para finalizar.
+      </p>
+    </div>
+  )
+}
+
+function StepperSection() {
+  return (
+    <Section
+      title="Stepper"
+      description="Navegação em etapas para formulários e fluxos multi-step. No passo Endereço, use os botões para testar o estado de erro."
+    >
+      <div className="space-y-2">
+        <p className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+          Padrão
+        </p>
+        <div className="rounded-lg border border-border p-6">
+          <Stepper steps={STEPPER_STEPS}>
+            <StepperHeader />
+            <StepperPanel step={0}>
+              <StepperPanelPessoal />
+            </StepperPanel>
+            <StepperPanel step={1}>
+              <StepperPanelEndereco />
+            </StepperPanel>
+            <StepperPanel step={2}>
+              <StepperPanelPagamento />
+            </StepperPanel>
+            <StepperPanel step={3}>
+              <StepperPanelRevisao />
+            </StepperPanel>
+            <StepperNavigation />
+          </Stepper>
+        </div>
+      </div>
     </Section>
   )
 }
@@ -551,6 +687,8 @@ export function ComponentsPage() {
           </Section>
 
           <DatePickerSection />
+
+          <StepperSection />
 
           <Section
             title="Toast (Sonner)"
