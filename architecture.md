@@ -253,7 +253,7 @@ export type UserFormData = z.infer<typeof userFormSchema>
 Always consume the pre-built wrappers in `src/components/form/` (e.g. `<InputForm<T> />`). If a new field type is needed, add it to `src/components/form/` — do not write one-off field implementations inside page components.
 
 ```tsx
-<InputForm<UserFormData>
+<InputForm
   control={form.control}
   name="email"
   label="E-mail"

@@ -2,6 +2,8 @@ import { type ReactNode, useState } from "react"
 import { toast } from "sonner"
 import { SearchIcon, SendIcon, UserIcon, MailIcon, LockIcon } from "lucide-react"
 
+import { Dropzone } from "@/components/dropzone"
+
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
@@ -513,6 +515,58 @@ function DatePickerSection() {
   )
 }
 
+function DropzoneSection() {
+  const [files, setFiles] = useState<File[]>([])
+  const [singleFile, setSingleFile] = useState<File[]>([])
+
+  return (
+    <Section title="Dropzone" description="Área de arrastar e soltar arquivos, com suporte a múltiplos arquivos, restrição de tipo e tamanho.">
+      <Preview label="Múltiplos arquivos" className="flex-col items-start">
+        <div className="w-full max-w-lg">
+          <Dropzone
+            value={files}
+            onFilesChange={setFiles}
+            hint="Qualquer formato, até 10 MB por arquivo"
+          />
+        </div>
+      </Preview>
+
+      <Preview label="Arquivo único" className="flex-col items-start">
+        <div className="w-full max-w-lg">
+          <Dropzone
+            value={singleFile}
+            onFilesChange={setSingleFile}
+            multiple={false}
+            hint="Substitui o arquivo anterior ao selecionar um novo"
+          />
+        </div>
+      </Preview>
+
+      <Preview label="Tipo restrito — imagens" className="flex-col items-start">
+        <div className="w-full max-w-lg">
+          <Dropzone
+            value={[]}
+            onFilesChange={() => {}}
+            accept={{ "image/*": [".png", ".jpg", ".jpeg", ".webp"] }}
+            hint="PNG, JPG ou WebP até 5 MB"
+          />
+        </div>
+      </Preview>
+
+      <Preview label="Desabilitado" className="flex-col items-start">
+        <div className="w-full max-w-lg">
+          <Dropzone
+            value={[]}
+            onFilesChange={() => {}}
+            disabled
+            hint="Upload desabilitado"
+          />
+        </div>
+      </Preview>
+    </Section>
+  )
+}
+
 function CompleteFormExample() {
   const [submitted, setSubmitted] = useState(false)
 
@@ -682,6 +736,7 @@ export function FormsPage() {
         <SwitchSection />
         <SliderSection />
         <DatePickerSection />
+        <DropzoneSection />
         <CompleteFormExample />
       </div>
     </div>
